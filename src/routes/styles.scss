@@ -4,6 +4,8 @@
 // Import the mixins.
 @use '@material/typography/index' as typography;
 
+@use '@material/elevation/mdc-elevation';
+
 //
 // Some defaults that may be helpful to you.
 // If you just want to use these, and not the classes, you can instead just
