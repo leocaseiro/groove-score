@@ -3,6 +3,7 @@
 	import Header from './Header.svelte';
 	import './styles.scss';
 
+	import { base } from '$app/paths';
 	import { darkTheme } from '$stores';
 
 	onMount(() => {
@@ -13,13 +14,13 @@
 <svelte:head>
 	<!-- SMUI Styles -->
 	{#if $darkTheme === undefined}
-		<link rel="stylesheet" href="/smui.css" media="(prefers-color-scheme: light)" />
-		<link rel="stylesheet" href="/smui-dark.css" media="screen and (prefers-color-scheme: dark)" />
+		<link rel="stylesheet" href="{base}/smui.css" media="(prefers-color-scheme: light)" />
+		<link rel="stylesheet" href="{base}/smui-dark.css" media="screen and (prefers-color-scheme: dark)" />
 	{:else if $darkTheme}
-		<link rel="stylesheet" href="/smui.css" />
-		<link rel="stylesheet" href="/smui-dark.css" />
+		<link rel="stylesheet" href="{base}/smui.css" />
+		<link rel="stylesheet" href="{base}/smui-dark.css" />
 	{:else}
-		<link rel="stylesheet" href="/smui.css" />
+		<link rel="stylesheet" href="{base}/smui.css" />
 	{/if}
 </svelte:head>
 

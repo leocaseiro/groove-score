@@ -3,6 +3,7 @@
 	import Tooltip, { Wrapper } from '@smui/tooltip';
 	import IconButton from '@smui/icon-button';
 
+	import { base } from '$app/paths';
 	import { darkTheme } from '$stores';
 
 	let topAppBar: TopAppBar;
@@ -11,10 +12,14 @@
 <TopAppBar class="mdc-elevation--z4" bind:this={topAppBar} variant="standard">
 	<Row>
 		<Section>
-			<IconButton class="material-icons">menu</IconButton>
+			<IconButton href="{base}/" class="material-icons">menu</IconButton>
 			<Title>Groove Score</Title>
 		</Section>
 		<Section align="end" toolbar>
+			<Wrapper>
+				<IconButton href="{base}/about" class="material-icons" aria-label="About">info</IconButton>
+				<Tooltip xPos="start">About</Tooltip>
+			</Wrapper>
 			<Wrapper>
 				<IconButton on:click={darkTheme.toggle} class="material-icons" aria-label={$darkTheme ? 'enable light theme' : 'enable dark theme'}>{$darkTheme ? 'light_mode' : 'dark_mode'}</IconButton>
 				<Tooltip xPos="start">{$darkTheme ? 'light theme' : 'dark theme'}</Tooltip>
