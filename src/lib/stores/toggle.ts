@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-function createDarkTheme() {
+export function createToggle() {
 	const { subscribe, set, update } = writable<boolean>(undefined);
 
 	return {
@@ -11,5 +11,3 @@ function createDarkTheme() {
 		set: (v: boolean) => set(v),
 	};
 }
-
-export const darkTheme = createDarkTheme();

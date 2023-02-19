@@ -1,19 +1,19 @@
 <script lang="ts">
+	import Button from '@smui/button';
+	import IconButton from '@smui/icon-button';
 	import TopAppBar, { Row, Section, Title, AutoAdjust } from '@smui/top-app-bar';
 	import Tooltip, { Wrapper } from '@smui/tooltip';
-	import IconButton from '@smui/icon-button';
 
 	import { base } from '$app/paths';
-	import { darkTheme } from '$stores';
+	import { darkTheme, drawer } from '$stores';
 
 	let topAppBar: TopAppBar;
 </script>
-
 <TopAppBar class="mdc-elevation--z4" bind:this={topAppBar} variant="standard">
 	<Row>
 		<Section>
-			<IconButton href="{base}/" class="material-icons">menu</IconButton>
-			<Title>Groove Score</Title>
+			<IconButton on:click={drawer.toggle} class="material-icons">menu</IconButton>
+			<Title><Button title="Groove Score" href="{base}/">Groove Score</Button></Title>
 		</Section>
 		<Section align="end" toolbar>
 			<Wrapper>
