@@ -48,6 +48,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@material/dom": "^14.0.0"
+		"@material/dom": "^14.0.0",
+		"abcjs": "^6.1.9"
 	}
 }
