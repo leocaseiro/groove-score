@@ -2,6 +2,7 @@
 	"name": "groove-score",
 	"version": "0.0.1",
 	"scripts": {
+		"start": "npm run dev",
 		"dev": "vite dev",
 		"deploy": "touch build/.nojekyll && node ./gh-pages",
 		"build": "vite build",
@@ -21,6 +22,7 @@
 		"@material/typography": "^14.0.0",
 		"@playwright/test": "^1.28.1",
 		"@smui/button": "^7.0.0-beta.0",
+		"@smui/data-table": "^7.0.0-beta.0",
 		"@smui/drawer": "^7.0.0-beta.0",
 		"@smui/icon-button": "^7.0.0-beta.0",
 		"@smui/list": "^7.0.0-beta.0",
@@ -49,6 +51,7 @@
 	"type": "module",
 	"dependencies": {
 		"@material/dom": "^14.0.0",
-		"abcjs": "^6.1.9"
+		"abcjs": "^6.1.9",
+		"dexie": "^3.2.3"
 	}
 }

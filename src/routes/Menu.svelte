@@ -16,6 +16,7 @@
 		url: string;
 		icon: string;
 		title: string;
+		subList?: Link[];
 	}
 
 	const appPages: Link[] = [
@@ -23,7 +24,7 @@
 			title: 'About',
 			url: 'about',
 			icon: 'info'
-		}
+		},
 		// {
 		//     title: 'Lessons',
 		//     url: 'lessons',
@@ -44,11 +45,18 @@
 		//     url: 'songs',
 		//     icon: 'music_note',
 		// },
-		// {
-		//     title: 'Settings',
-		//     url: 'settings',
-		//     icon: 'settings',
-		// },
+		{
+		    title: 'Settings',
+		    url: 'settings',
+		    icon: 'settings',
+			subList: [
+				{
+					title: 'Map Midi',
+					url: 'settings/map-midi',
+					icon: 'usb',
+				}
+			]
+		},
 	];
 
 	const bookmarks: Link[] = [
@@ -72,6 +80,23 @@
 				<Graphic class="material-icons" aria-hidden="true">{item.icon}</Graphic>
 				<Text>{item.title}</Text>
 			</Item>
+
+			{#if item.subList}
+			<Item wrapper>
+				<List class="sub-list">
+					{#each item.subList as subItem}
+					<Item
+						href="{base}/{subItem.url}"
+						on:click={() => setActive(subItem.title)}
+						activated={active === subItem.title}
+					>
+						<Graphic class="material-icons" aria-hidden="true">{subItem.icon}</Graphic>
+						<Text>{subItem.title}</Text>
+					</Item>
+					{/each}
+				</List>
+			</Item>
+			{/if}
 		{/each}
 
 		<Separator />

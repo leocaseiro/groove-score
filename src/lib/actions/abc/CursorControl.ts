@@ -1,3 +1,5 @@
+import type ABCJS from 'abcjs';
+
 export class CursorControl {
     private paperSvg: HTMLElement | null = null;
     private beatSubdivisions = 2;
