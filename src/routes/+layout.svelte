@@ -51,3 +51,10 @@
 		</main>
 	</div>
 </AppContent>
+
+<style>
+
+	main {
+		padding: 0 48px;
+	}
+</style>

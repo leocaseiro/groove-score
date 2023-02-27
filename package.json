@@ -4,7 +4,8 @@
 	"scripts": {
 		"start": "npm run dev",
 		"dev": "vite dev",
-		"deploy": "touch build/.nojekyll && node ./gh-pages",
+		"predeploy": "npm run build && touch build/.nojekyll",
+		"deploy": "node ./gh-pages",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
@@ -26,6 +27,7 @@
 		"@smui/drawer": "^7.0.0-beta.0",
 		"@smui/icon-button": "^7.0.0-beta.0",
 		"@smui/list": "^7.0.0-beta.0",
+		"@smui/textfield": "^7.0.0-beta.0",
 		"@smui/tooltip": "^7.0.0-beta.0",
 		"@smui/top-app-bar": "^7.0.0-beta.0",
 		"@sveltejs/adapter-auto": "^2.0.0",
@@ -52,6 +54,8 @@
 	"dependencies": {
 		"@material/dom": "^14.0.0",
 		"abcjs": "^6.1.9",
-		"dexie": "^3.2.3"
+		"dexie": "^3.2.3",
+		"svelte-forms-lib": "^2.0.1",
+		"yup": "^1.0.1"
 	}
 }

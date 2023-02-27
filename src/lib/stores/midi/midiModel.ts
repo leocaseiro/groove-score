@@ -52,7 +52,8 @@ export const defaultNotes: INote[] = [
     {
         abc: '_c',
         label: 'Electric Snare',
-        midi: [40],
+        midi: [40, 80, 90], // fake test
+        // midi: [40],
         name: 'electric-snare',
         short: 'SN',
         enabled: false,

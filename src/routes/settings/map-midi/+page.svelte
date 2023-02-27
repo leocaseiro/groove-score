@@ -3,6 +3,7 @@
 
     import { liveQuery, type Observable } from "dexie";
 
+    import { base } from '$app/paths';
     import { midiDB } from "$stores";
     import type { INote } from '$stores/midi/midiModel';
     import { browser } from '$app/environment';
@@ -33,7 +34,7 @@
             {#if $notes}
                 {#each $notes as note (note.sound)}
                     <Row>
-                        <Cell>{note.sound}</Cell>
+                        <Cell><a href="{base}/settings/map-midi/{note.sound}">{note.sound}</a></Cell>
                         <Cell>{note.abc}</Cell>
                         <Cell>{note.midi.join(', ')}</Cell>
                     </Row>

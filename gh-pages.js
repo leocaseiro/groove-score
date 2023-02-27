@@ -13,5 +13,6 @@ publish(
     },
     () => {
         console.log('deploy oh gh-pages complete!');
+        console.log('Go to https://leocaseiro.github.io/groove-score/');
     }
 );
