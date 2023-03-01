@@ -6,6 +6,7 @@
     import Textfield from '@smui/textfield';
     import HelperText from '@smui/textfield/helper-text';
     import Kitchen from '@smui/snackbar/kitchen';
+    import Tooltip, { Wrapper } from '@smui/tooltip';
 
     import { midiDB } from '$stores';
     import type { INote } from '$stores/midi/midiModel';
@@ -60,14 +61,25 @@
 
 <form on:submit={handleSubmit}>
     {#each $form.midi as midi, i}
-    <IconButton on:click={(e) => { e.preventDefault(); removeMidi(i)}} class="material-icons" aria-label="Remove midi">remove</IconButton>
-    <Textfield name={`midi[${i}].val`} label="Midi" bind:value={$form.midi[i].val}>
+    <Textfield name={`midi[${i}].val`} label="Midi" bind:value={midi.val}>
         <svelte:fragment slot="helper">
             <HelperText persistent validationMsg>{$errors?.midi[i] && cast($errors.midi[i])?.val}</HelperText>
         </svelte:fragment>
+        <svelte:fragment slot="suffix">
+            <Wrapper>
+				<IconButton on:click={(e) => { e.preventDefault(); removeMidi(i)}} class="material-icons" aria-label="Remove midi">remove</IconButton>
+				<Tooltip>remove MIDI {midi.val}</Tooltip>
+			</Wrapper>
+
+            {#if i === $form.midi.length-1}
+                <Wrapper>
+                    <IconButton on:click={(e) => { e.preventDefault(); addMidi()}} class="material-icons" aria-label="Add midi">add</IconButton>
+                    <Tooltip>add extra MIDI</Tooltip>
+                </Wrapper>
+            {/if}
+        </svelte:fragment>
     </Textfield>
     {/each}
-    <IconButton on:click={(e) => { e.preventDefault(); addMidi()}} class="material-icons" aria-label="Add midi">add</IconButton>
     <br />
-    <Button type="submit">submit</Button>
+    <Button type="submit">save</Button>
 </form>
