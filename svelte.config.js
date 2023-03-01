@@ -9,7 +9,11 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			pages: 'build',
+			assets: 'build',
+			fallback: 'index.html'
+		}),
 		alias: {
 			$components: 'src/lib/components',
 			$assets: 'src/assets',
