@@ -66,10 +66,12 @@
             <HelperText persistent validationMsg>{$errors?.midi[i] && cast($errors.midi[i])?.val}</HelperText>
         </svelte:fragment>
         <svelte:fragment slot="suffix">
-            <Wrapper>
-				<IconButton on:click={(e) => { e.preventDefault(); removeMidi(i)}} class="material-icons" aria-label="Remove midi">remove</IconButton>
-				<Tooltip>remove MIDI {midi.val}</Tooltip>
-			</Wrapper>
+            {#if i !== 0}
+                <Wrapper>
+                    <IconButton on:click={(e) => { e.preventDefault(); removeMidi(i)}} class="material-icons" aria-label="Remove midi">remove</IconButton>
+                    <Tooltip>remove MIDI {midi.val}</Tooltip>
+                </Wrapper>
+            {/if}
 
             {#if i === $form.midi.length-1}
                 <Wrapper>
