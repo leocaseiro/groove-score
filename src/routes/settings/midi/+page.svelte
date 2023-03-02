@@ -26,17 +26,23 @@
         <Head>
           <Row>
             <Cell>Sound</Cell>
+            <Cell>Label</Cell>
             <Cell>Abc (note)</Cell>
             <Cell>Midi</Cell>
+            <Cell>Part</Cell>
+            <Cell>&nbsp;</Cell>
           </Row>
         </Head>
         <Body>
             {#if $notes}
                 {#each $notes as note (note.sound)}
                     <Row>
-                        <Cell><a href="{base}/settings/map-midi/{note.sound}">{note.sound}</a></Cell>
-                        <Cell>{note.abc}</Cell>
-                        <Cell>{note.midi.join(', ')}</Cell>
+                        <Cell><a href="{base}/settings/midi/{note.sound}">{note.sound}</a></Cell>
+                        <Cell><a href="{base}/settings/midi/{note.sound}">{note.label}</a></Cell>
+                        <Cell><a href="{base}/settings/midi/{note.sound}">{note.abc}</a></Cell>
+                        <Cell><a href="{base}/settings/midi/{note.sound}">{note.midi.join(', ')}</a></Cell>
+                        <Cell><a href="{base}/settings/midi/{note.sound}">{note.part}</a></Cell>
+                        <Cell><a href="{base}/settings/midi/{note.sound}">{note.enabled}</a></Cell>
                     </Row>
                 {/each}
             {/if}

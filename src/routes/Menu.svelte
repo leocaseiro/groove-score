@@ -12,7 +12,7 @@
 		drawer.set(false);
 	}
 
-	interface Link {
+	type Link = {
 		url: string;
 		icon: string;
 		title: string;
@@ -51,8 +51,8 @@
 		    icon: 'settings',
 			subList: [
 				{
-					title: 'Map Midi',
-					url: 'settings/map-midi',
+					title: 'Midi',
+					url: 'settings/midi',
 					icon: 'usb',
 				}
 			]
