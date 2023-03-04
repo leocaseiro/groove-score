@@ -9,10 +9,10 @@ export const csr = true;
 export const prerender = false;
 
 export const load = (({ params }) => {
-  const note = liveQuery(
-      () => browser ? db.notes.get(params.slug) : undefined
+  const tune = liveQuery(
+      () => browser ? db.tunes.get({id: Number(params.id) }) : undefined
   );
   return {
-    note
+    tune
   };
 }) satisfies PageLoad;

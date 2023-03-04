@@ -1,10 +1,7 @@
 import ABCJS, { type AbcElem, type ClickListenerAnalysis, type ClickListenerDrag } from 'abcjs';
 import { CursorControl } from './CursorControl';
 
-const abcStringPrefix = `
-X:1
-T:Rock Beat
-%%barnumbers 1
+const abcStringPrefix = `%%barnumbers 1
 %%stretchlast 1
 %%percmap D  pedal-hi-hat x
 %%percmap F  bass-drum-1
@@ -36,8 +33,11 @@ V:ALL stem=up
 
 let abcString: string;
 
-function setAbcString(abc: string) {
-    abcString = abcStringPrefix + abc;
+function setAbcString(abc: string, title = 'Beat') {
+    const abcTitle = `X:1
+T:${title}
+`;
+    abcString = abcTitle + abcStringPrefix + abc;
 }
 
 let synthControl: ABCJS.SynthObjectController;
@@ -90,14 +90,17 @@ const abcOptions: ABCJS.AbcVisualParams = {
     responsive: 'resize'
 };
 
-export function loadTune(node: HTMLElement, value: string) {
+type AbcTune = {
+    value: string, title: string
+}
+export function loadTune(node: HTMLElement, { value, title }: AbcTune) {
 
-    setAbcString(value);
+    setAbcString(value, title);
     setTune(node, false);
 
     return {
-        update(v: string) {
-            setAbcString(v);
+        update(v: AbcTune) {
+            setAbcString(v.value, v.title);
             setTune(node, true);
         }
     }

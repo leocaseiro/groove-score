@@ -1,22 +1,37 @@
 <script lang="ts">
 	import { Content, Header, Title, Subtitle } from '@smui/drawer';
 	import List, { Item, Text, Graphic, Separator, Subheader } from '@smui/list';
+	import { liveQuery, type Observable } from "dexie";
 
 	import { base } from '$app/paths';
-	import { drawer } from '$stores';
-
-	let active = 'Inbox';
-
-	function setActive(value: string) {
-		active = value;
-		drawer.set(false);
-	}
+    import { browser } from '$app/environment';
+	import { drawer, db } from '$stores';
 
 	type Link = {
 		url: string;
 		icon: string;
 		title: string;
 		subList?: Link[];
+	}
+
+    let bookmarks: Observable<Link[]>;
+    bookmarks = liveQuery(
+        async () => {
+			if (!browser) {
+				return [];
+			}
+			const tunes = await db.tunes.toArray();
+			return tunes.map(({ id, title }) => (
+				{ title, url: `${base}/tunes/${id}`, icon: 'bookmark' }
+			));
+		}
+    );
+
+	let active = 'Inbox';
+
+	function setActive(value: string) {
+		active = value;
+		drawer.set(false);
 	}
 
 	const appPages: Link[] = [
@@ -58,11 +73,6 @@
 			]
 		},
 	];
-
-	const bookmarks: Link[] = [
-		{ title: 'Rock', url: 'javascript:void(0)', icon: 'bookmark' },
-		{ title: 'Punk Rock - Beat 1', url: 'javascript:void(0)', icon: 'bookmark' }
-	];
 </script>
 
 <Header>
@@ -99,17 +109,19 @@
 			{/if}
 		{/each}
 
-		<Separator />
-		<Subheader tag="h6">Bookmarks</Subheader>
-		{#each bookmarks as item}
-			<Item
-				href={item.url}
-				on:click={() => setActive(item.title)}
-				activated={active === item.title}
-			>
-				<Graphic class="material-icons" aria-hidden="true">{item.icon}</Graphic>
-				<Text>{item.title}</Text>
-			</Item>
-		{/each}
+		{#if $bookmarks}
+			<Separator />
+			<Subheader tag="h6">Bookmarks</Subheader>
+			{#each $bookmarks as item}
+				<Item
+					href={item.url}
+					on:click={() => setActive(item.title)}
+					activated={active === item.title}
+				>
+					<Graphic class="material-icons" aria-hidden="true">{item.icon}</Graphic>
+					<Text>{item.title}</Text>
+				</Item>
+			{/each}
+		{/if}
 	</List>
 </Content>

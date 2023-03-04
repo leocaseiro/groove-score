@@ -8,13 +8,13 @@
     import Kitchen from '@smui/snackbar/kitchen';
     import Tooltip, { Wrapper } from '@smui/tooltip';
 
-    import { midiDB } from '$stores';
-    import type { INote } from '$stores/midi/midiModel';
+    import { db } from '$stores';
+    import type { Note } from '$stores/models/midiModel';
     import { mapArrToObjValues, mapObjValuesToArr } from '$lib/utils';
 
     let success: Kitchen;
 
-    export let note: INote;
+    export let note: Note;
 
     const { form, errors, handleSubmit } = createForm({
         initialValues: {
@@ -25,7 +25,7 @@
         }),
         onSubmit: (values) => {
             const newMidi = mapObjValuesToArr<number>(values.midi).map(n => Number(n));
-            midiDB.notes.update(note.sound, { midi: newMidi});
+            db.notes.update(note.sound, { midi: newMidi});
 
             // Hack to fix bug with $errors not updating
             // @ts-expect-error Type 'string' is not assignable to type 'number'.ts(2769)

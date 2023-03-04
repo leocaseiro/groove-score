@@ -34,7 +34,7 @@ enum Part {
     'wood block' = 'wood block',
 }
 
-export interface INote {
+export type Note = {
     abc: string;
     abcStyle?: string;
     abcVariations?: AbcVariations;
@@ -48,7 +48,7 @@ export interface INote {
     part: Part;
 };
 
-export const defaultNotes: INote[] = [
+export const defaultNotes: Note[] = [
     {
         abc: '_c',
         label: 'Electric Snare',

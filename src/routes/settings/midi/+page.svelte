@@ -4,13 +4,13 @@
     import { liveQuery, type Observable } from "dexie";
 
     import { base } from '$app/paths';
-    import { midiDB } from "$stores";
-    import type { INote } from '$stores/midi/midiModel';
+    import { db } from "$stores";
+    import type { Note } from '$stores/models/midiModel';
     import { browser } from '$app/environment';
 
-    let notes: Observable<INote[]>;
+    let notes: Observable<Note[]>;
     notes = liveQuery(
-        () => browser ? midiDB.notes.toArray() : []
+        () => browser ? db.notes.toArray() : []
     );
 </script>
 
