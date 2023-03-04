@@ -123,5 +123,14 @@
 				</Item>
 			{/each}
 		{/if}
+
+
+		<Separator />
+		<Item
+			on:click={() => db.delete()}
+		>
+			<Graphic class="material-icons" aria-hidden="true">delete</Graphic>
+			<Text>Clear IndexedDB</Text>
+		</Item>
 	</List>
 </Content>
