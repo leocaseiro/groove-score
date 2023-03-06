@@ -5,10 +5,13 @@
 	import Tooltip, { Wrapper } from '@smui/tooltip';
 
 	import { base } from '$app/paths';
-	import { darkTheme, drawer } from '$stores';
+	import { darkTheme, drawer, midiUsb } from '$stores';
+	import USBMidiSettingsDialog from '$components/USBMidiSettingsDialog.svelte';
 
+	let open: Boolean = false;
 	let topAppBar: TopAppBar;
 </script>
+<USBMidiSettingsDialog bind:open={open} />
 <TopAppBar class="mdc-elevation--z4" bind:this={topAppBar} variant="standard">
 	<Row>
 		<Section>
@@ -17,8 +20,8 @@
 		</Section>
 		<Section align="end" toolbar>
 			<Wrapper>
-				<IconButton href="{base}/about" class="material-icons" aria-label="About">info</IconButton>
-				<Tooltip xPos="start">About</Tooltip>
+				<IconButton on:click={() => (open = true)} class="material-icons" aria-label="Midi">{$midiUsb ? 'usb' : 'usb_off'}</IconButton>
+				<Tooltip xPos="start">MIDI</Tooltip>
 			</Wrapper>
 			<Wrapper>
 				<IconButton on:click={darkTheme.toggle} class="material-icons" aria-label={$darkTheme ? 'enable light theme' : 'enable dark theme'}>{$darkTheme ? 'light_mode' : 'dark_mode'}</IconButton>

@@ -1,5 +1,5 @@
 export type Tune = {
-    id?: string;
+    id?: number;
     author: string;
     title: string;
     tune: string;
