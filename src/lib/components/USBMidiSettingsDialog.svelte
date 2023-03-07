@@ -12,7 +12,6 @@
     }
 </script>
 
----{@html open}---
 <Dialog
     bind:open
     on:SMUIDialog:closed={closeHandler}
