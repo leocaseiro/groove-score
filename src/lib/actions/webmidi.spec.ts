@@ -1,5 +1,7 @@
 import { WebMidi, type PortEvent } from 'webmidi';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { MIDI_INPUT } from '$stores/models/settingsModel';
+import { db } from '$stores';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { onMidiConnected, onMidiDisconnected, loadMidi } from './webmidi';
 
@@ -14,14 +16,31 @@ describe('actions/webmidi', () => {
     });
 
     describe('onMidiConnected', () => {
+        afterEach(() => {
+            vi.restoreAllMocks()
+        })
+
         it('should ignore any types that are not input', () => {
             const EXPECTED = onMidiConnected(({ port : { type : 'xxx' } } as PortEvent));
 
             expect(EXPECTED).toBe(undefined);
         });
 
-        it('should enable midi if no input_midi in DB', () => {
+        it('should enable midi if no midi_input in DB', async () => {
+            vi.spyOn(db.settings, 'get')
+                .mockResolvedValue({
+                    value: {
+                        enabled: false,
+                        name: null,
+                    }
+                });
+            vi.spyOn(db.settings, 'update');
 
+            await db.settings.get(MIDI_INPUT);
+
+            onMidiConnected(({ port : { type : 'xxx' } } as PortEvent));
+
+            expect(db.settings.update).toHaveBeenCalledWith({});
         });
 
         it('should set latest Input as the default one if no midi is set yet', () => {

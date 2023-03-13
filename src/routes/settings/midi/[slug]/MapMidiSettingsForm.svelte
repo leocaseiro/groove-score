@@ -25,7 +25,7 @@
         }),
         onSubmit: (values) => {
             const newMidi = mapObjValuesToArr<number>(values.midi).map(n => Number(n));
-            db.notes.update(note.sound, { midi: newMidi});
+            db.notes.update(note.sound, { midi: newMidi });
 
             // Hack to fix bug with $errors not updating
             // @ts-expect-error Type 'string' is not assignable to type 'number'.ts(2769)

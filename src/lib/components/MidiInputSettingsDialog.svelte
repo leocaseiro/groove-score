@@ -2,7 +2,7 @@
     import Dialog, { Title, Content, Actions, InitialFocus } from '@smui/dialog';
     import Button, { Label } from '@smui/button';
 
-    import USBMidiSettingsForm from './USBMidiSettingsForm.svelte';
+    import MidiInputSettingsForm from './MidiInputSettingsForm.svelte';
 
     export let open: Boolean = false;
 
@@ -18,7 +18,7 @@
 >
     <Title id="list-selection-title">MIDI Input</Title>
     <Content id="list-selection-content">
-        <USBMidiSettingsForm />
+        <MidiInputSettingsForm />
     </Content>
     <Actions>
         <Button>

@@ -1,18 +1,21 @@
 type G = {
     [key: string]: number | boolean | string | null;
 }
-export type Setting<T = G> = {
+
+export type Setting = {
     id: string;
-    value: T;
+    value: any;
 };
+
+export const MIDI_INPUT = 'midi_input';
 
 export const defaultSettings: Setting[] = [
     {
-        id: 'midi_input',
+        id: MIDI_INPUT,
         value: {
             enabled: false,
             by: 'auto',
-            obj_id: null,
+            name: null,
         },
     }
 ];

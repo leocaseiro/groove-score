@@ -1,5 +1,5 @@
 export type MidiInput = {
-    id?: number;
+    id: string;
     name: string;
-    enabled: boolean;
+    manufacturer?: string;
 };
