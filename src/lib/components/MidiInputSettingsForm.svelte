@@ -15,6 +15,8 @@
 
     let success: Kitchen;
 
+    let selected = '';
+    let is_enabled = false;
     const midi_input = liveQuery(
       async () => {
         if (!browser) {
@@ -35,14 +37,18 @@
         async () => browser ? await db.inputMidi.toArray() : []
     );
 
-    // export let usb: USB;
+    $: midi_input.subscribe(({ name, enabled }) => {
+        selected = name;
+        is_enabled = enabled
+    });
 
-    // $: selected = $midi_input.name || '';
+    $: onToggle = async (e: CustomEvent) => {
+        await db.settings.update(MIDI_INPUT, { 'value.enabled': e.detail.selected });
+    }
 
-    // $: toggle = (item) => {
-    //     // db.usb.update();
-    //     console.log('item', item);
-    // }
+    $: onSelect = async (e: CustomEvent) => {
+        await db.settings.update(MIDI_INPUT, { 'value.name': e.target.value });
+    }
 </script>
 
 <Kitchen bind:this={success} dismiss$class="material-icons" />
@@ -50,17 +56,17 @@
     {#if $midi_input}
         <FormField align="end">
             <svelte:fragment slot="label">USB MIDI</svelte:fragment>
-            <Switch bind:checked={$midi_input.enabled} />
+            <Switch on:SMUISwitch:change={onToggle} bind:checked={is_enabled} />
         </FormField>
         {#if $inputs}
-        {#each $inputs as option}
-            <FormField class="gs-smui-mdc-form-field">
-                <Radio disabled={!$midi_input.enabled} bind:group={$midi_input.name} value={option.name} />
-                <span slot="label">
-                    {option.name}
-                </span>
-            </FormField>
-        {/each}
+            {#each $inputs as option}
+                <FormField class="gs-smui-mdc-form-field">
+                    <Radio on:click={onSelect} disabled={!$midi_input.enabled} bind:group={selected} value={option.name} />
+                    <span slot="label">
+                        {option.name}
+                    </span>
+                </FormField>
+            {/each}
         {/if}
 
     {/if}

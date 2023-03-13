@@ -77,7 +77,7 @@ export async function onMidiDisconnected(e: PortEvent) {
 // * @fires WebMidi#midiaccessgranted
 // * @fires WebMidi#portschanged
 
-export async function loadMidi() {
+export async function loadMidi(_node) {
     try {
         // WebMidi.addListener('enabled', (e) => {console.log('enabled', e)});
         // WebMidi.addListener('portschanged', (e) => {console.log('portschanged', e)});
@@ -86,7 +86,7 @@ export async function loadMidi() {
 
 
         await WebMidi.enable();
-        console.log('enable');
+        // console.log('enable');
     } catch (error) {
         return console.error('WebMidi could not be enabled.', error);
     }
