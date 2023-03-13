@@ -1,6 +1,6 @@
 import { WebMidi, type PortEvent, type Input } from 'webmidi';
 
-function onMidiConnected(e: PortEvent) {
+export function onMidiConnected(e: PortEvent) {
     console.log('onMidiConnected.e', e);
     if (e.port.type !== 'input') {
         return;
@@ -13,7 +13,7 @@ function onMidiConnected(e: PortEvent) {
     // }
 }
 
-function onMidiDisconnected(e: PortEvent) {
+export function onMidiDisconnected(e: PortEvent) {
     console.log('onMidiDisconnected.e', e);
     if (e.port.type !== 'input') {
         return;
@@ -39,7 +39,7 @@ function onMidiDisconnected(e: PortEvent) {
 
 export async function loadMidi() {
     try {
-        WebMidi.addListener('enabled', (e) => {console.log('enabled', e)});
+        // WebMidi.addListener('enabled', (e) => {console.log('enabled', e)});
         // WebMidi.addListener('portschanged', (e) => {console.log('portschanged', e)});
         WebMidi.addListener('connected', onMidiConnected);
         WebMidi.addListener('disconnected', onMidiDisconnected);
