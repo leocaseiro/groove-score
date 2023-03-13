@@ -4,7 +4,7 @@
 
     import USBMidiSettingsForm from './USBMidiSettingsForm.svelte';
 
-    export let open: Boolean = false;
+    export let open: boolean = false;
 
     function closeHandler(e: CustomEvent<{ action: string }>) {
         console.log('closeHandler', e);
@@ -12,7 +12,6 @@
     }
 </script>
 
----{@html open}---
 <Dialog
     bind:open
     on:SMUIDialog:closed={closeHandler}

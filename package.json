@@ -64,6 +64,7 @@
 		"abcjs": "^6.1.9",
 		"dexie": "^3.2.3",
 		"svelte-forms-lib": "^2.0.1",
+		"webmidi": "^3.1.4",
 		"yup": "^1.0.1"
 	}
 }

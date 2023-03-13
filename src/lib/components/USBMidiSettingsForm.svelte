@@ -5,6 +5,7 @@
     import Radio from '@smui/radio';
 
     import { midiUsb } from '$stores';
+    import { loadWebmidi } from '$actions/webmidi';
 
     let success: Kitchen;
 
@@ -21,7 +22,7 @@
 </script>
 
 <Kitchen bind:this={success} dismiss$class="material-icons" />
-<div>
+<div use:loadWebmidi>
     <FormField align="end">
         <svelte:fragment slot="label">USB MIDI</svelte:fragment>
         <Switch bind:checked={$midiUsb} />
