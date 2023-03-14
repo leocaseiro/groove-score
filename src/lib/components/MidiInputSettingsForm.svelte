@@ -9,7 +9,7 @@
     import { liveQuery, type Observable } from "dexie";
 
     import { browser } from '$app/environment';
-    import { db } from '$stores';
+    import { db, midiInputs } from '$stores';
     import { MIDI_INPUT } from '$stores/models/settingsModel';
     import type { MidiInput } from '$stores/models/midiInputModel';
 
@@ -28,14 +28,9 @@
         if (!input) {
             return { enabled: false };
         }
-        
+
         return input?.value || { enabled: false };
   	});
-
-    let inputs: Observable<MidiInput[]>;
-    inputs = liveQuery(
-        async () => browser ? await db.inputMidi.toArray() : []
-    );
 
     $: midi_input.subscribe(({ name, enabled }) => {
         selected = name;
@@ -58,8 +53,8 @@
             <svelte:fragment slot="label">USB MIDI</svelte:fragment>
             <Switch on:SMUISwitch:change={onToggle} bind:checked={is_enabled} />
         </FormField>
-        {#if $inputs}
-            {#each $inputs as option}
+        {#if $midiInputs}
+            {#each $midiInputs as option}
                 <FormField class="gs-smui-mdc-form-field">
                     <Radio on:click={onSelect} disabled={!$midi_input.enabled} bind:group={selected} value={option.name} />
                     <span slot="label">

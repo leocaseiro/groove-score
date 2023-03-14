@@ -1,38 +1,30 @@
 import { WebMidi, type PortEvent, type Input } from 'webmidi';
-import { MIDI_INPUT } from '$stores/models/settingsModel';
-import { db } from '$stores';
+import { MIDI_INPUT, type MidiInputSettings } from '$stores/models/settingsModel';
+import { db, midiInputs } from '$stores';
 
 
 export async function onMidiConnected(e: PortEvent) {
     if (e.port.type !== 'input') {
         return;
     }
-    const [{ id, manufacturer, name }] = WebMidi.inputs.slice(-1);
+    const [{ name }] = WebMidi.inputs.slice(-1);
 
-    const midiInputSettings = await db.settings.get(MIDI_INPUT);
+    const inputs = WebMidi.inputs.map(({ id, manufacturer, name })=> ({ id, manufacturer, name }));
+    midiInputs.set(inputs);
 
-    if (!midiInputSettings?.value.enabled && midiInputSettings?.value.name === name) {
-        db.settings.update(MIDI_INPUT, { value: { enabled: true, name, by: 'auto' } });
+    const { value: { enabled, by } }: {value: MidiInputSettings} = await db.settings.get(MIDI_INPUT);
+
+    if (enabled) {
         return;
     }
 
-    if (!midiInputSettings?.value.enabled && !midiInputSettings?.value.name) {
-        // TODO trasition
-        await db.inputMidi.put({
-            id,
-            manufacturer,
-            name
-        });
-
-        db.settings.update(MIDI_INPUT, { value: { enabled: true, name, by: 'auto' } });
-        return;
-    }
-
-    if (midiInputSettings?.value.enabled && midiInputSettings?.value.name !== name) {
+    if (by === 'manual') {
         // TODO
         console.log('show midi input settings/dialog');
         return;
     }
+
+    db.settings.update(MIDI_INPUT, { value: { enabled: true, name, by: 'auto' } });
 
     // midiInputs.set()
     // if (selectedInput === 'all' || selectedInput === e.port.name) {
@@ -45,19 +37,17 @@ export async function onMidiDisconnected(e: PortEvent) {
         return;
     }
 
+    const inputs = WebMidi.inputs.map(({ id, manufacturer, name })=> ({ id, manufacturer, name }));
+    midiInputs.set(inputs);
+
     if (WebMidi.inputs.length === 0) {
         db.settings.update(MIDI_INPUT, { 'value.enabled': false });
         db.settings.update(MIDI_INPUT, { 'value.by': 'auto' });
         return;
     }
 
-    const [{ id, manufacturer, name }] = WebMidi.inputs.slice(-1);
-    
-    await db.inputMidi.put({
-        id,
-        manufacturer,
-        name
-    });
+    const [{ name }] = WebMidi.inputs.slice(-1);
+
     db.settings.update(MIDI_INPUT, { value: { enabled: true, name, by: 'auto' } });
 
     // midiInputs.set(WebMidi.inputs.map((input) => input.name));
@@ -86,8 +76,9 @@ export async function loadMidi(_node) {
 
 
         await WebMidi.enable();
-        // console.log('enable');
+        // alert('enable');
     } catch (error) {
+        alert('WebMidi could not be enabled.');
         return console.error('WebMidi could not be enabled.', error);
     }
 }

@@ -1,9 +1,10 @@
-import { createGeneric } from './genericStore';
+import { writable } from 'svelte/store';
+
 import { createToggle } from './toggleStore';
-import type { TuneObject } from 'abcjs';
+import type { MidiInput } from './models/midiInputModel';
 
 export { db } from './dbStore';
 
 export const darkTheme = createToggle();
 export const drawer = createToggle();
-export const visualObj = createGeneric<TuneObject>();
+export const midiInputs = writable<MidiInput[]>();
