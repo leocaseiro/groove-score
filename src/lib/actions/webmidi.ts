@@ -1,30 +1,51 @@
-import { WebMidi, type PortEvent, type Input } from 'webmidi';
+import { get } from 'svelte/store';
+import { WebMidi, type PortEvent, Input } from 'webmidi';
 import { MIDI_INPUT } from '$stores/models/settingsModel';
-import { db } from '$stores';
+import { db, midiInputs } from '$stores';
 
+const listenToNote = (input: Input) => {
+    input.addListener("noteon", (e) => {
+        console.log("noteon.e", e);
+        console.log("noteon", e?.data?.join(":"));
+    });
+}
 
 export async function onMidiConnected(e: PortEvent) {
-    if (e.port.type !== 'input') {
-        return;
+    if (WebMidi.inputs.length === 0) {
+        return
     }
-    const [{ id, manufacturer, name }] = WebMidi.inputs.slice(-1);
+
+    const [latestInput] = WebMidi.inputs.slice(-1);
+
+    const inputs = get(midiInputs);
+
+    const {
+        id,
+        manufacturer,
+        name
+    } = latestInput;
+
+    midiInputs.set([...inputs, {
+        id,
+        manufacturer,
+        name: name || manufacturer || 'MidiInput'
+    }]);
 
     const midiInputSettings = await db.settings.get(MIDI_INPUT);
 
+    if (midiInputSettings?.value.enabled) {
+        return;
+    }
+
     if (!midiInputSettings?.value.enabled && midiInputSettings?.value.name === name) {
         db.settings.update(MIDI_INPUT, { value: { enabled: true, name, by: 'auto' } });
+        listenToNote(latestInput);
         return;
     }
 
     if (!midiInputSettings?.value.enabled && !midiInputSettings?.value.name) {
-        // TODO trasition
-        await db.inputMidi.put({
-            id,
-            manufacturer,
-            name
-        });
-
         db.settings.update(MIDI_INPUT, { value: { enabled: true, name, by: 'auto' } });
+        listenToNote(latestInput);
         return;
     }
 
@@ -41,24 +62,17 @@ export async function onMidiConnected(e: PortEvent) {
 }
 
 export async function onMidiDisconnected(e: PortEvent) {
-    if (e.port.type !== 'input') {
-        return;
-    }
-
     if (WebMidi.inputs.length === 0) {
         db.settings.update(MIDI_INPUT, { 'value.enabled': false });
         db.settings.update(MIDI_INPUT, { 'value.by': 'auto' });
         return;
     }
 
-    const [{ id, manufacturer, name }] = WebMidi.inputs.slice(-1);
-    
-    await db.inputMidi.put({
-        id,
-        manufacturer,
-        name
-    });
-    db.settings.update(MIDI_INPUT, { value: { enabled: true, name, by: 'auto' } });
+    const [{ name }] = WebMidi.inputs.slice(-1);
+
+    db.settings.update(MIDI_INPUT, { value: { enabled: false, name, by: 'auto' } });
+
+    // TODO remove listener
 
     // midiInputs.set(WebMidi.inputs.map((input) => input.name));
     // const name = e.port.name;
@@ -79,8 +93,8 @@ export async function onMidiDisconnected(e: PortEvent) {
 
 export async function loadMidi(_node) {
     try {
-        // WebMidi.addListener('enabled', (e) => {console.log('enabled', e)});
-        // WebMidi.addListener('portschanged', (e) => {console.log('portschanged', e)});
+        // WebMidi.addListener('enabled', (e) => {alert('enabled')});
+        // WebMidi.addListener('portschanged', (e) => {alert('portschanged')});
         WebMidi.addListener('connected', onMidiConnected);
         WebMidi.addListener('disconnected', onMidiDisconnected);
 
@@ -88,6 +102,7 @@ export async function loadMidi(_node) {
         await WebMidi.enable();
         // console.log('enable');
     } catch (error) {
+        alert('WebMidi could not be enabled.');
         return console.error('WebMidi could not be enabled.', error);
     }
 }
