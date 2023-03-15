@@ -1,0 +1,1 @@
+import{W as t,d as o}from"./dbStore-261bf5aa.js";import"./index-3a852631.js";const r=!0,s=!1,n=({params:e})=>({note:t(()=>o.notes.get(e.slug))}),p=Object.freeze(Object.defineProperty({__proto__:null,csr:r,load:n,prerender:s},Symbol.toStringTag,{value:"Module"}));export{p as _,r as c,n as l,s as p};
