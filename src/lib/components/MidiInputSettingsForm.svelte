@@ -58,7 +58,7 @@
                 <FormField class="gs-smui-mdc-form-field">
                     <Radio on:click={onSelect} disabled={!$midi_input.enabled} bind:group={selected} value={option.name} />
                     <span slot="label">
-                        {option.name}
+                        {option.name || option.manufacturer || 'MidiInput'}
                     </span>
                 </FormField>
             {/each}

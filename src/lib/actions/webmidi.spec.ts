@@ -3,7 +3,22 @@ import { MIDI_INPUT } from '$stores/models/settingsModel';
 import { db } from '$stores';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { onMidiConnected, onMidiDisconnected, loadMidi } from './webmidi';
+import { onMidiConnected, onMidiDisconnected, loadMidi, onPortsChanged } from './webmidi';
+
+/**
+ * onPortsChanged
+ * 1. check if there is a current input is still connected
+ * 1.1a if no longer connected, disconnect
+ * 1.1b check if any other inputs
+ * 1.1b.a if no other inputs, disconnect
+ * 1.1b.b if other input
+ * 
+ * onDisconnect
+ * remove listeners
+ * update DB
+*      
+ * 
+ */
 
 describe('actions/webmidi', () => {
     it('should add event listeners on loadMidi', () => {
@@ -11,8 +26,9 @@ describe('actions/webmidi', () => {
 
         loadMidi();
 
-        expect(WebMidi.addListener).toHaveBeenNthCalledWith(1, 'connected', onMidiConnected);
-        expect(WebMidi.addListener).toHaveBeenNthCalledWith(2, 'disconnected', onMidiDisconnected);
+        expect(WebMidi.addListener).toHaveBeenNthCalledWith(1, 'portchanged', onPortsChanged);
+        // expect(WebMidi.addListener).toHaveBeenNthCalledWith(2, 'connected', onMidiConnected);
+        // expect(WebMidi.addListener).toHaveBeenNthCalledWith(3, 'disconnected', onMidiDisconnected);
     });
 
     describe('onMidiConnected', () => {

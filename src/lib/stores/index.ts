@@ -6,4 +6,4 @@ export { db } from './dbStore';
 
 export const darkTheme = createToggle();
 export const drawer = createToggle();
-export const midiInputs = writable<MidiInput[]>();
+export const midiInputs = writable<Input[]>([]);
