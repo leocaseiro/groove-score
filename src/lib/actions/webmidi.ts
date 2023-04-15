@@ -1,5 +1,4 @@
 import { get } from "svelte/store";
-import { WebMidi, type PortEvent, Input, type Listener } from 'webmidi';
 import { MIDI_INPUT } from '$stores/models/settingsModel';
 import { db, midiInputs } from '$stores';
 
@@ -10,11 +9,12 @@ import { db, midiInputs } from '$stores';
  * https://github.com/jpcarrascal/web-midi-poc/blob/main/midi.js
  */
 
-let selectedInput: Input | undefined;
+let midiAccess: WebMidi.MIDIAccess;
+let selectedInput: MIDIInput | undefined;
 let noteOnListener: Listener;
 let noteOffListener: Listener;
 
-const listenToNote = (input: Input) => {
+const listenToNote = (input: MIDIInput) => {
     console.log("listenToNote", input.name || input.manufacturer || 'MidiInput');
     input.addListener("noteon", (e) => {
         console.log("noteon.e", e);
@@ -28,11 +28,11 @@ export const disableMidiInput = () => {
     db.settings.update(MIDI_INPUT, { 'value.by': 'auto' });
 }
 
-export const findInputByName = (inputs: Input[], name: string) => {
+export const findInputByName = (inputs: WebMidi.MIDIInput[], name: string) => {
     return inputs.find(input => getInputName(input) === name);
 }
 
-export const getInputName = (input: Input) => {
+export const getInputName = (input: WebMidi.MIDIInput) => {
     const {
         manufacturer,
         name
@@ -41,12 +41,18 @@ export const getInputName = (input: Input) => {
     return name || manufacturer || 'MidiInput';
 }
 
-export const hasInput = (inputs: Input[]) => {
+export const hasInput = (inputs: WebMidi.MIDIInput[]) => {
     return inputs.length > 0;
 }
 
-export const updateInputs = (inputs: Input[] = []) => {
+export const updateInputs = (inputsIterator: IterableIterator<WebMidi.MIDIInput>) => {
+    const inputs = [];
+    for (let o = inputsIterator.next(); !o.done; o = inputsIterator.next()) {
+      inputs.push(o.value);
+    }
     midiInputs.set([...inputs ?? []]);
+
+    return inputs;
 }
 
 export const getLatestInput = () => {
@@ -62,7 +68,7 @@ export const getLatestInput = () => {
 
     return [latestMidiName, latestInput];
 }
-
+/*
 export async function onMidiConnected(e: PortEvent) {
     if (WebMidi.inputs.length === 0) {
         return
@@ -121,8 +127,8 @@ export async function onMidiDisconnected(e: PortEvent) {
     //     addAllInputListeners();
     // }
 }
-
-export const onInputSelect = (input: Input) => {
+*/
+export const onInputSelect = (input: MIDIInput) => {
     if (selectedInput) {
         selectedInput.removeListener(noteOnListener);
         selectedInput.removeListener(noteOffListener);
@@ -139,70 +145,44 @@ export const onInputSelect = (input: Input) => {
     }
 }
 
-export const onPortsChanged = async (e: PortEvent) => {
+export const onStateChanged = async (event: WebMidi.MIDIConnectionEvent) => {
+    console.log(event);
     // update list
-    updateInputs(WebMidi.inputs);
+    const inputs = updateInputs(midiAccess.inputs.values());
 
     // update settings
-    if (!hasInput()) {
+    if (!hasInput(inputs)) {
         disableMidiInput();
         return;
-
     }
 
     const midiInputSettings = await db.settings.get(MIDI_INPUT);
     if (midiInputSettings?.value?.enabled) {
-        const input = (findInputByName(midiInputs, midiInputSettings.value.name));
-        if (midiInputs) {
-
+        const input = (findInputByName(inputs, midiInputSettings.value.name));
+        if (input) {
             return;
         }
 
-        cancelInput(input);
+        disableMidiInput();
     }
 
     // check if is still there
     // YES: is 
     // NO
-
-    
-    
-    
-    // console.log('e.port', e.port); // no port on iPad
-    
-    // console.log('e.port', e.port.channels);
-    console.log('e.target._inputs.length', e?.target?._inputs?.length);
-    if (e?.target?._inputs?.length > 0) {
-        const [latestInput] = WebMidi.inputs.slice(-1);
-        onInputSelect(latestInput);
-        return;
-    }
-    
-    // selectedInput.removeListener(noteOnListener);
-    // selectedInput.removeListener(noteOffListener);
-    // db.settings.update(MIDI_INPUT, { value: { enabled: false, by: 'auto' } }); 
 }
 
-// * @fires WebMidi#connected
-// * @fires WebMidi#disabled
-// * @fires WebMidi#disconnected
-// * @fires WebMidi#enabled
-// * @fires WebMidi#error
-// * @fires WebMidi#midiaccessgranted
-// * @fires WebMidi#portschanged
 
 export async function loadMidi(_node) {
+    if (!window.navigator?.requestMIDIAccess) {
+        alert("Web MIDI API is not available on your browser.");
+        return;       
+    }
+
     try {
-        // WebMidi.addListener('enabled', (e) => {alert('enabled')});
-        WebMidi.addListener('portschanged', onPortsChanged);
-        // WebMidi.addListener('connected', onMidiConnected);
-        // WebMidi.addListener('disconnected', onMidiDisconnected);
-
-
-        await WebMidi.enable();
-        // console.log('enable');
-    } catch (error) {
-        alert('WebMidi could not be enabled.');
-        return console.error('WebMidi could not be enabled.', error);
+        const midiAccess = await window.navigator.requestMIDIAccess({ sysex: false });
+        midiAccess.onstatechange = onStateChanged;
+    } catch(err) {
+        alert("Web MIDI API is not available on your browser.");
+        console.error(err);
     }
 }

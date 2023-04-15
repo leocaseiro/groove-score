@@ -3,7 +3,7 @@ import { MIDI_INPUT } from '$stores/models/settingsModel';
 import { db } from '$stores';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { onMidiConnected, onMidiDisconnected, loadMidi, onPortsChanged } from './webmidi';
+import { onMidiConnected, onMidiDisconnected, loadMidi, onStateChanged } from './webmidi';
 
 /**
  * onPortsChanged
@@ -26,7 +26,7 @@ describe('actions/webmidi', () => {
 
         loadMidi();
 
-        expect(WebMidi.addListener).toHaveBeenNthCalledWith(1, 'portchanged', onPortsChanged);
+        expect(WebMidi.addListener).toHaveBeenNthCalledWith(1, 'portchanged', onStateChanged);
         // expect(WebMidi.addListener).toHaveBeenNthCalledWith(2, 'connected', onMidiConnected);
         // expect(WebMidi.addListener).toHaveBeenNthCalledWith(3, 'disconnected', onMidiDisconnected);
     });
