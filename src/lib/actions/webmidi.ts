@@ -74,7 +74,8 @@ export const disableMidiInput = () => {
     db.settings.update(MIDI_INPUT, { 'value.by': 'auto' });
 };
 
-export async function loadMidi(_node) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function loadMidi(_node: HTMLElement) {
     if (!navigator.requestMIDIAccess) {
         const warning = 'WebMidi API not supported on this browser.';
         alert(warning);
@@ -82,37 +83,39 @@ export async function loadMidi(_node) {
         return;
     }
 
-    try {
-        midiAccess = await navigator.requestMIDIAccess();
-        midiAccess.onstatechange = () => {
-            const inputs: MIDIInput[] = [];
+    (async () => {
+        try {
+            midiAccess = await navigator.requestMIDIAccess();
+            midiAccess.onstatechange = () => {
+                const inputs: MIDIInput[] = [];
 
-            // Using forEach because of an issue with `Array.from` on iOS https://github.com/mizuhiki/WebMIDIAPIShimForiOS/issues/11
-            midiAccess?.inputs.forEach((input) => {
-                inputs.push(input);
-            });
-
-            if (inputs.length > 0) {
-                inputOptions = inputs.map((input, i) => {
-                    return { id: input.id, name: `${i + 1}: ${getInputName(input)}` };
+                // Using forEach because of an issue with `Array.from` on iOS https://github.com/mizuhiki/WebMIDIAPIShimForiOS/issues/11
+                midiAccess?.inputs.forEach((input) => {
+                    inputs.push(input);
                 });
 
-                if (!selectedInput || !inputs.includes(selectedInput)) {
-                    updateSelectedInput(inputs[0].id);
-                }
-                midiInputs.set(inputOptions);
-            } else {
-                midiInputs.set([]);
-                selectedInput = null;
-                disableMidiInput();
-            }
-        };
+                if (inputs.length > 0) {
+                    inputOptions = inputs.map((input, i) => {
+                        return { id: input.id, name: `${i + 1}: ${getInputName(input)}` };
+                    });
 
-        // @ts-expect-error event is not been used
-        midiAccess.onstatechange();
-    } catch (error) {
-        console.error('Failed to initialize MIDI: ', error);
-    }
+                    if (!selectedInput || !inputs.includes(selectedInput)) {
+                        updateSelectedInput(inputs[0].id);
+                    }
+                    midiInputs.set(inputOptions);
+                } else {
+                    midiInputs.set([]);
+                    selectedInput = null;
+                    disableMidiInput();
+                }
+            };
+
+            // @ts-expect-error event is not been used
+            midiAccess.onstatechange();
+        } catch (error) {
+            console.error('Failed to initialize MIDI: ', error);
+        }
+    })();
 
     return {
         destroy() {

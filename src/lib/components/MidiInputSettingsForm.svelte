@@ -17,19 +17,17 @@
         is_enabled = enabled;
     });
 
-    $: onToggle = async (e: CustomEvent) => {
+    $: onToggle = async (e: CustomEvent<{ selected: string }>) => {
         await db.settings.update(MIDI_INPUT, { 'value.enabled': e.detail.selected });
         if (e.detail.selected) {
-            console.log('enabled', selected, e.detail.selected);
             updateSelectedInput(selected, 'auto');
         } else {
-            console.log('disabled', selected, e.detail.selected);
             disableMidiInput();
         }
     };
 
-    $: onSelect = async (e: MouseEventHandler) => {
-        const id = e.target.value;
+    $: onSelect = async (e: CustomEvent) => {
+        const id = (e.target as HTMLInputElement).value;
         updateSelectedInput(id, 'manual');
     };
 </script>
