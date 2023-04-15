@@ -57,12 +57,12 @@ function clickListener(
         return;
     }
 
-    console.log({
-        currentTrackMilliseconds: (abcElem as any).currentTrackMilliseconds,
-        currentTrackWholeNotes: (abcElem as any).currentTrackWholeNotes,
-        midiPitches: abcElem.midiPitches,
-        gracenotes: abcElem.gracenotes,
-        midiGraceNotePitches: abcElem.midiGraceNotePitches});
+    // console.log({
+    //     currentTrackMilliseconds: (abcElem as any).currentTrackMilliseconds,
+    //     currentTrackWholeNotes: (abcElem as any).currentTrackWholeNotes,
+    //     midiPitches: abcElem.midiPitches,
+    //     gracenotes: abcElem.gracenotes,
+    //     midiGraceNotePitches: abcElem.midiGraceNotePitches});
 
     const lastClicked = abcElem.midiPitches;
     if (!lastClicked) {
@@ -77,10 +77,10 @@ function clickListener(
             synthControl.visualObj.millisecondsPerMeasure()
         )
         .then(function (response) {
-            console.log('note played');
+            // console.log('note played');
         })
         .catch(function (error) {
-            console.log('error playing note', error);
+            console.error('error playing note', error);
         });
 }
 
@@ -140,20 +140,20 @@ function setTune(node: HTMLElement, userAction: boolean) {
             visualObj: visualObj
         })
         .then(function (response) {
-            console.log(response);
+            // console.log(response);
             if (synthControl) {
                 synthControl
                     .setTune(visualObj, userAction)
                     .then(function (response) {
-                        console.log('response', response);
-                        console.log('Audio successfully loaded.');
+                        // console.log('response', response);
+                        // console.log('Audio successfully loaded.');
                     })
                     .catch(function (error) {
-                        console.warn('Audio problem:', error);
+                        console.error('Audio problem:', error);
                     });
             }
         })
         .catch(function (error) {
-            console.warn('Audio problem:', error);
+            console.error('Audio problem:', error);
         });
 }
