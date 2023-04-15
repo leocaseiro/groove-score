@@ -13,8 +13,7 @@
 
     let open: Boolean = false;
     let topAppBar: TopAppBar;
-    const midi_input = liveQuery(
-      async () => {
+    const midi_input = liveQuery(async () => {
         if (!browser) {
             return undefined;
         }
@@ -24,9 +23,9 @@
         if (!input) {
             return { enabled: false };
         }
-        
+
         return input?.value || { enabled: false };
-  	});
+    });
 </script>
 
 <MidiInputSettingsDialog bind:open />

@@ -1,17 +1,17 @@
 type MidiVariations = {
-  default: number[];
-  [key: string]: number[];
+    default: number[];
+    [key: string]: number[];
 };
 
 type AbcVariations = {
-  default: {
-    abc: string;
-    abcStyle?: string;
-  },
-  [key: string]: {
-    abc: string;
-    abcStyle?: string;
-  };
+    default: {
+        abc: string;
+        abcStyle?: string;
+    };
+    [key: string]: {
+        abc: string;
+        abcStyle?: string;
+    };
 };
 
 enum Part {
@@ -31,7 +31,7 @@ enum Part {
     'tom2' = 'tom2',
     'tom3' = 'tom3',
     'triangle' = 'triangle',
-    'wood block' = 'wood block',
+    'wood block' = 'wood block'
 }
 
 export type Note = {
@@ -58,7 +58,7 @@ export const defaultNotes: Note[] = [
         short: 'SN',
         enabled: false,
         sound: 'electric-snare',
-        part: Part.snare,
+        part: Part.snare
     },
     {
         abc: 'c',
@@ -68,7 +68,7 @@ export const defaultNotes: Note[] = [
         short: 'SN',
         enabled: true,
         sound: 'acoustic-snare',
-        part: Part.snare,
+        part: Part.snare
     },
     {
         abc: '=c',
@@ -79,7 +79,7 @@ export const defaultNotes: Note[] = [
         short: 'RS',
         enabled: false,
         sound: 'side-stick',
-        part: Part['snare rim-shot'],
+        part: Part['snare rim-shot']
     },
     {
         abc: 'E',
@@ -89,7 +89,7 @@ export const defaultNotes: Note[] = [
         short: 'BD',
         enabled: true,
         sound: 'acoustic-bass-drum',
-        part: Part.bass,
+        part: Part.bass
     },
     {
         abc: 'F',
@@ -99,7 +99,7 @@ export const defaultNotes: Note[] = [
         short: 'BS',
         enabled: false,
         sound: 'bass-drum-1',
-        part: Part.bass,
+        part: Part.bass
     },
     {
         abc: 'g',
@@ -110,7 +110,7 @@ export const defaultNotes: Note[] = [
         short: 'CHH',
         enabled: true,
         sound: 'closed-hi-hat',
-        part: Part['closed hi-hat'],
+        part: Part['closed hi-hat']
     },
     {
         abc: `"^o"^g`,
@@ -121,7 +121,7 @@ export const defaultNotes: Note[] = [
         short: 'OHH',
         enabled: true,
         sound: 'open-hi-hat',
-        part: Part['open hi-hat'],
+        part: Part['open hi-hat']
     },
     {
         abc: 'a',
@@ -132,7 +132,7 @@ export const defaultNotes: Note[] = [
         short: 'RD',
         enabled: true,
         sound: 'ride-cymbal-1',
-        part: Part.ride,
+        part: Part.ride
     },
     {
         abc: '_a',
@@ -143,7 +143,7 @@ export const defaultNotes: Note[] = [
         short: 'RB',
         enabled: false,
         sound: 'ride-bell',
-        part: Part['ride bell'],
+        part: Part['ride bell']
     },
     {
         abc: 'b',
@@ -154,7 +154,7 @@ export const defaultNotes: Note[] = [
         short: 'CR',
         enabled: true,
         sound: 'crash-cymbal-1',
-        part: Part.crash,
+        part: Part.crash
     },
     {
         abc: "!style=x!c'",
@@ -165,7 +165,7 @@ export const defaultNotes: Note[] = [
         short: 'CR',
         enabled: false,
         sound: 'crash-cymbal-2',
-        part: Part.crash,
+        part: Part.crash
     },
     {
         abc: '^d',
@@ -176,7 +176,7 @@ export const defaultNotes: Note[] = [
         short: 'HW',
         enabled: false,
         sound: 'hi-wood-block',
-        part: Part['wood block'],
+        part: Part['wood block']
     },
     {
         abc: 'e',
@@ -186,7 +186,7 @@ export const defaultNotes: Note[] = [
         short: 'HT',
         enabled: true,
         sound: 'hi-mid-tom',
-        part: Part.tom1,
+        part: Part.tom1
     },
     {
         abc: 'f',
@@ -196,7 +196,7 @@ export const defaultNotes: Note[] = [
         short: 'HT',
         enabled: true,
         sound: 'high-tom',
-        part: Part.tom1,
+        part: Part.tom1
     },
     {
         abc: 'd',
@@ -206,7 +206,7 @@ export const defaultNotes: Note[] = [
         short: 'LM',
         enabled: true,
         sound: 'low-mid-tom',
-        part: Part.tom2,
+        part: Part.tom2
     },
     {
         abc: 'B',
@@ -216,7 +216,7 @@ export const defaultNotes: Note[] = [
         short: 'LT',
         enabled: true,
         sound: 'low-tom',
-        part: Part.tom2,
+        part: Part.tom2
     },
     {
         abc: 'A',
@@ -226,7 +226,7 @@ export const defaultNotes: Note[] = [
         short: 'FT',
         enabled: true,
         sound: 'high-floor-tom',
-        part: Part.tom3,
+        part: Part.tom3
     },
     {
         abc: 'G',
@@ -236,7 +236,7 @@ export const defaultNotes: Note[] = [
         short: 'FT',
         enabled: true,
         sound: 'low-floor-tom',
-        part: Part.tom3,
+        part: Part.tom3
     },
     {
         abc: 'D',
@@ -247,7 +247,7 @@ export const defaultNotes: Note[] = [
         short: 'PHH',
         enabled: true,
         sound: 'pedal-hi-hat',
-        part: Part['pedal hi-hat'],
+        part: Part['pedal hi-hat']
     },
     {
         abc: '^B',
@@ -258,7 +258,7 @@ export const defaultNotes: Note[] = [
         short: 'TB',
         enabled: true,
         sound: 'tambourine',
-        part: Part.tambourine,
+        part: Part.tambourine
     },
     {
         abc: '_C',
@@ -269,7 +269,7 @@ export const defaultNotes: Note[] = [
         short: 'TB',
         enabled: false,
         sound: 'low-wood-block',
-        part: Part['wood block'],
+        part: Part['wood block']
     },
     {
         abc: '^e',
@@ -280,7 +280,7 @@ export const defaultNotes: Note[] = [
         short: 'CB',
         enabled: false,
         sound: 'cowbell',
-        part: Part.cowbell,
+        part: Part.cowbell
     },
     {
         abc: '^a',
@@ -291,6 +291,6 @@ export const defaultNotes: Note[] = [
         short: 'TR',
         enabled: false,
         sound: 'open-triangle',
-        part: Part['open triangle'],
-    },
+        part: Part['open triangle']
+    }
 ];

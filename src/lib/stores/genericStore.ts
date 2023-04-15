@@ -1,11 +1,11 @@
 import { writable } from 'svelte/store';
 
 export function createGeneric<T>() {
-	const { subscribe, set, update } = writable<T>(undefined);
+    const { subscribe, set, update } = writable<T>(undefined);
 
-	return {
-		subscribe,
+    return {
+        subscribe,
         update,
-		set,
-	};
+        set
+    };
 }

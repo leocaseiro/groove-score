@@ -10,7 +10,7 @@
 </script>
 
 <main>
-    <div id={abcEl} use:loadTune={{value, title}} />
+    <div id={abcEl} use:loadTune={{ value, title }} />
     <div use:loadAudio={abcEl} />
     <textarea bind:value />
 </main>

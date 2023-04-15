@@ -91,10 +91,10 @@ const abcOptions: ABCJS.AbcVisualParams = {
 };
 
 type AbcTune = {
-    value: string, title: string
-}
+    value: string;
+    title: string;
+};
 export function loadTune(node: HTMLElement, { value, title }: AbcTune) {
-
     setAbcString(value, title);
     setTune(node, false);
 
@@ -103,7 +103,7 @@ export function loadTune(node: HTMLElement, { value, title }: AbcTune) {
             setAbcString(v.value, v.title);
             setTune(node, true);
         }
-    }
+    };
 }
 
 export function loadAudio(audioEl: HTMLElement, abcEl: string) {

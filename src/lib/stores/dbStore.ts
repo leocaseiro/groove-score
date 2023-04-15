@@ -10,13 +10,13 @@ class GrooveScoreDatabase extends Dexie {
     inputMidi!: Dexie.Table<MidiInput, string>;
     settings!: Dexie.Table<Setting, string>;
 
-    constructor () {
+    constructor() {
         super('gs-midi-database');
         this.version(1).stores({
             notes: 'sound, abc, *midi, part',
             tunes: '++id, author, title, *tags',
             inputMidi: 'name',
-            settings: 'id',
+            settings: 'id'
         });
     }
 }

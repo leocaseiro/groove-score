@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="%sveltekit.assets%/favicon.png" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-	<meta charset="utf-8" />
-	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-	<meta name="viewport" content="width=device-width" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- Material Icons -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <!-- Roboto -->
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700"
+        />
+        <!-- Roboto Mono -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono" />
 
-	<!-- Material Icons -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-	<!-- Roboto -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700" />
-	<!-- Roboto Mono -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono" />
+        <!-- Reset -->
+        <style type="text/css">
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .mdc-top-app-bar {
+                top: 0;
+            }
+        </style>
 
-	<!-- Reset -->
-	<style type="text/css">
-		html,
-		body {
-    		margin: 0;
-    		padding: 0;
-		}
-		.mdc-top-app-bar {
-			top: 0;
-		}
-	</style>
+        %sveltekit.head%
+    </head>
 
-	%sveltekit.head%
-</head>
-
-<body data-sveltekit-preload-data="hover">
-	<div style="display: contents">%sveltekit.body%</div>
-</body>
-
+    <body data-sveltekit-preload-data="hover">
+        <div style="display: contents">%sveltekit.body%</div>
+    </body>
 </html>

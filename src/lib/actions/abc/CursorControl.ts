@@ -20,7 +20,7 @@ export class CursorControl {
         cursor.setAttribute('class', 'abcjs-cursor');
         cursor.setAttributeNS(null, 'x1', '0');
         cursor.setAttributeNS(null, 'y1', '0');
-        cursor.setAttributeNS (null, 'x2', '0');
+        cursor.setAttributeNS(null, 'x2', '0');
         cursor.setAttributeNS(null, 'y2', '0');
         svg.appendChild(cursor);
     }

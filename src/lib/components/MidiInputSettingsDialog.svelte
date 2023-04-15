@@ -8,10 +8,7 @@
     }
 </script>
 
-<Dialog
-    bind:open
-    on:SMUIDialog:closed={closeHandler}
->
+<Dialog bind:open on:SMUIDialog:closed={closeHandler}>
     <Title id="list-selection-title">MIDI Input</Title>
     <Content id="list-selection-content">
         <MidiInputSettingsForm />

@@ -1,7 +1,6 @@
 # Groove Score - Write, and practice your drum grooves
 
-Made with SvelteKit
-----
+## Made with SvelteKit
 
 ## create-svelte
 

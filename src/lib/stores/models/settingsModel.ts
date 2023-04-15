@@ -1,6 +1,6 @@
 type G = {
     [key: string]: number | boolean | string | null;
-}
+};
 
 export type Setting = {
     id: string;
@@ -16,7 +16,7 @@ export const defaultSettings: Setting[] = [
             enabled: false,
             by: 'auto',
             id: 0,
-            name: null,
-        },
+            name: null
+        }
     }
 ];

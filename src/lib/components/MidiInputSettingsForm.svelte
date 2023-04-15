@@ -4,58 +4,67 @@
     import FormField from '@smui/form-field';
     import Radio from '@smui/radio';
     import { disableMidiInput, loadMidi, midi_input, updateSelectedInput } from '$actions/webmidi';
-    import { liveQuery } from "dexie";
-    
-    
+
     import { db, midiInputs } from '$stores';
     import { MIDI_INPUT } from '$stores/models/settingsModel';
-    
+
     let success: Kitchen;
     let selected = '';
     let is_enabled = false;
-    
+
     $: midi_input.subscribe(({ id, enabled }) => {
         selected = id;
-        is_enabled = enabled
+        is_enabled = enabled;
     });
-    
+
     $: onToggle = async (e: CustomEvent) => {
         await db.settings.update(MIDI_INPUT, { 'value.enabled': e.detail.selected });
         if (e.detail.selected) {
             console.log('enabled', selected, e.detail.selected);
-            updateSelectedInput(selected, 'auto');    
+            updateSelectedInput(selected, 'auto');
         } else {
             console.log('disabled', selected, e.detail.selected);
             disableMidiInput();
         }
-    }
-    
+    };
+
     $: onSelect = async (e: MouseEventHandler) => {
         const id = e.target.value;
         updateSelectedInput(id, 'manual');
-    }
-
+    };
 </script>
 
 <Kitchen bind:this={success} dismiss$class="material-icons" />
 <div use:loadMidi>
     {#if $midi_input}
         <FormField align="end">
-            <svelte:fragment slot="label">{$midiInputs.length > 0 ? 'Enable MIDI' : 'No MIDI devices detected'}</svelte:fragment>
-            <Switch on:SMUISwitch:change={onToggle} disabled={$midiInputs.length === 0} bind:checked={is_enabled} />
+            <svelte:fragment slot="label"
+                >{$midiInputs.length > 0
+                    ? 'Enable MIDI'
+                    : 'No MIDI devices detected'}</svelte:fragment
+            >
+            <Switch
+                on:SMUISwitch:change={onToggle}
+                disabled={$midiInputs.length === 0}
+                bind:checked={is_enabled}
+            />
         </FormField>
 
         {#if $midiInputs}
             {#each $midiInputs as option}
                 <FormField class="gs-smui-mdc-form-field">
-                    <Radio on:click={onSelect} disabled={!$midi_input.enabled} bind:group={selected} value={option.id} />
+                    <Radio
+                        on:click={onSelect}
+                        disabled={!$midi_input.enabled}
+                        bind:group={selected}
+                        value={option.id}
+                    />
                     <span slot="label">
                         {option.name}
                     </span>
                 </FormField>
             {/each}
         {/if}
-
     {/if}
 </div>
 
