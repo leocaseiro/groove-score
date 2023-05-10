@@ -3,9 +3,9 @@ import type ABCJS from 'abcjs';
 export class CursorControl {
     private paperSvg: HTMLElement | null = null;
     private beatSubdivisions = 2;
+    private synthControl: ABCJS.SynthObjectController | null = null;
 
-    constructor(abcEl: string) {
-        const el = document.getElementById(abcEl);
+    constructor(el: HTMLElement) {
         if (el) {
             this.paperSvg = el;
         }
@@ -15,6 +15,7 @@ export class CursorControl {
         if (!this.paperSvg) {
             return;
         }
+        
         const svg = this.paperSvg.querySelector('svg') as SVGSVGElement;
         const cursor = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         cursor.setAttribute('class', 'abcjs-cursor');
@@ -29,6 +30,10 @@ export class CursorControl {
         console.log(`Beat: ${beatNumber} Total: ${totalBeats} Total time: ${totalTime}`);
     }
 
+    public onEventCallback = (synthControl, currentTime, currentNoteTimings) => {
+
+    }
+
     public onEvent(ev: ABCJS.NoteTimingEvent): void {
         if (ev.measureStart && ev.left === null) {
             return; // this was the second part of a tie across a measure line. Just ignore it.
@@ -37,6 +42,12 @@ export class CursorControl {
         this.removeHighlights();
 
         console.log('Current Note', ev);
+        console.log('this.synthControl', this.synthControl);
+        const currentNoteTimings = this.synthControl?.timer.noteTimings[this.synthControl?.timer.currentEvent];
+        console.log('currentNoteTimings', currentNoteTimings.milliseconds);
+        console.log('currentTime', this.synthControl?.timer.currentTime);
+
+        this.onEventCallback(this.synthControl, this.synthControl?.timer.currentTime, currentNoteTimings);
 
         if (!ev.elements) return;
 
@@ -88,5 +99,9 @@ export class CursorControl {
         for (let i = 0; i < els.length; i++) {
             els[i].classList.remove('highlight');
         }
+    }
+
+    public setSynth(synthControl: ABCJS.SynthObjectController) {
+        this.synthControl = synthControl;
     }
 }

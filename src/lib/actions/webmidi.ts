@@ -14,6 +14,7 @@ let midiAccess: MIDIAccess;
 let selectedInput: MIDIInput | null = null;
 let noteEvents: NoteEvent[] = [];
 let inputOptions: { id: string; name: string }[] = [];
+let onNotePlayed;
 
 const handleMidiMessage = (event: MIDIMessageEvent) => {
     console.log('handleMidiMessage', event.data);
@@ -75,7 +76,7 @@ export const disableMidiInput = () => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function loadMidi(_node: HTMLElement) {
+export function loadMidi(_node: HTMLElement, onNote) {
     if (!navigator.requestMIDIAccess) {
         const warning = 'WebMidi API not supported on this browser.';
         alert(warning);

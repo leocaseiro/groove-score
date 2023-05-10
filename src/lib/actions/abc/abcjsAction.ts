@@ -1,4 +1,4 @@
-import ABCJS, { type AbcElem, type ClickListenerAnalysis, type ClickListenerDrag } from 'abcjs';
+import ABCJS, { type AbcElem, type ClickListenerAnalysis, type ClickListenerDrag, type EventCallback } from 'abcjs';
 import { CursorControl } from './CursorControl';
 
 const abcStringPrefix = `%%barnumbers 1
@@ -106,8 +106,14 @@ export function loadTune(node: HTMLElement, { value, title }: AbcTune) {
     };
 }
 
-export function loadAudio(audioEl: HTMLElement, abcEl: string) {
-    const cursorControl: ABCJS.CursorControl = new CursorControl(abcEl);
+type CursoControlWithSynth = ABCJS.CursorControl & {
+    setSynth: (synth: ABCJS.SynthObjectController) => void,
+    onEventCallback: EventCallback,
+};
+
+export function loadAudio(audioEl: HTMLElement, props) {
+    const { abcEl, onEventCallback } = props;
+    const cursorControl: CursoControlWithSynth = new CursorControl(abcEl);
 
     if (ABCJS.synth.supportsAudio()) {
         synthControl = new ABCJS.synth.SynthController();
@@ -119,6 +125,9 @@ export function loadAudio(audioEl: HTMLElement, abcEl: string) {
             displayProgress: true,
             displayWarp: true
         });
+
+        cursorControl.setSynth(synthControl);
+        cursorControl.onEventCallback = onEventCallback;
     } else {
         if (audioEl) {
             audioEl.innerHTML =
@@ -132,21 +141,24 @@ function setTune(node: HTMLElement, userAction: boolean) {
         synthControl.disable(true);
     }
     const visualObj = ABCJS.renderAbc(node, abcString, abcOptions)[0];
+    console.log({visualObj});
 
     // TODO-PER: This will allow the callback function to have access to timing info - this should be incorporated into the render at some point.
     const midiBuffer = new ABCJS.synth.CreateSynth();
     midiBuffer
         .init({
             visualObj: visualObj
-        })
+        })  
         .then(function (response) {
             // console.log(response);
             if (synthControl) {
                 synthControl
                     .setTune(visualObj, userAction)
                     .then(function (response) {
-                        // console.log('response', response);
-                        // console.log('Audio successfully loaded.');
+                        console.log('response', response);
+                        console.log('Audio successfully loaded.');
+                        console.log({synthControl})
+                        console.log({midiBuffer})
                     })
                     .catch(function (error) {
                         console.error('Audio problem:', error);
